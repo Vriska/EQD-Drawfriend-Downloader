@@ -7,3 +7,5 @@ The draw threads of different years\months may be referred to by changing the ye
 
 
 Number of months forward refers to how many months worth of draw threads are to be downloaded from that reference point . 
+
+An exe of the same has been made using pyinstaller .
