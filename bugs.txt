@@ -1,1 +1,1 @@
-If there is more than 1 drawfriend a day , it messes with the numbering and leaves out 1 drawfriend on the previous month 
+If there is more than 1 drawfriend a day , it messes with the numbering and leaves out that many drawfriend on the previous month 
