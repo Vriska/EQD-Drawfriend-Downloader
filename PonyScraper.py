@@ -5,7 +5,7 @@ import re
 from math import floor
 import  time
 
-def Threads(FromYear,FromMonth) :
+def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the link 
     if FromMonth >=  12 :
         FromYear += floor(FromMonth/12)
         FromMonth = FromMonth % 12 + 1
@@ -16,7 +16,7 @@ def Threads(FromYear,FromMonth) :
     L = [x.get('href') for x in L]
     return L[1:]
 
-def ListGet(x):
+def ListGet(x):     # Makes a list of all source (Deviant art) URL for a given draw thread
     try :
         r = requests.get(str(x))
         soup = BeautifulSoup(str(r.text),"html.parser")
@@ -28,7 +28,7 @@ def ListGet(x):
 
 Directory = input("Enter directory , default(hit enter) is ponypics folder in desktop : ")
 
-def GetImage(x) :
+def GetImage(x) :      # downloads and saves picture from source URL 
     try:
         r = requests.get(str(x))
         soup = BeautifulSoup(r.text,"html.parser")
@@ -61,7 +61,9 @@ def GetImage(x) :
     except :
         print ('SAAWWY I DEERPED')
 
-Month = int(input('Starting Month : '))
+##UI stuff
+
+Month = int(input('Starting Month : '))  
 Year = int(input('Starting year : '))
 Num = int(input ('Number of Months forward : '))
 Num = Month + Num
@@ -79,7 +81,7 @@ else :
 
 ThreadCounter = 0
 for i in range(Month,Num+1):
-    for thread in Threads(Year,i)[StartThread-1:]:
+    for thread in Threads(Year,i)[StartThread-1:]: 
         for pic in ListGet(thread)[StartPic-1:]:
             GetImage(pic)
             print("month = " + str(i)+"   "+str(Threads(Year,i).index(thread)+1)+" of 32    " + str(ListGet(thread).index(pic)+1)+ " out of " + str(len(ListGet(thread))))
