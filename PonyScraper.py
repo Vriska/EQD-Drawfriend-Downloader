@@ -5,16 +5,16 @@ import re
 from math import floor
 import  time
 
-def Threads(YearsBackward,MonthsBackward) : ## makes a list of all drawfriend URL in the link , imputs are in number of years and number of months from start thread (See readme)
-    if FromMonth >=  12 :
+def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the link 
+    if FromMonth >=  12 :                 #We will be downloading threads month by month thus this is necessary  
         FromYear += floor(FromMonth/12)
-        FromMonth = FromMonth % 12 + 1
-    link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(YearsBackward)+"-"+str(MonthsBackward)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
+        FromMonth = FromMonth % 12 + 1       #Jan is 1 not 0 
+    link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(FromYear)+"-"+str(FromMonth)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
     r = requests.get(link)
     soup = BeautifulSoup(str(r.text),"html.parser")
     L = soup.find_all("a",string=re.compile('Drawfriend Stuff'))
     L = [x.get('href') for x in L]
-    return L[1:]
+    return L[1:]            #Removes first element which is random trash
 
 def ListGet(x):     # Makes a list of all source (Deviant art) URL for a given draw thread
     try :
@@ -34,7 +34,7 @@ def GetImage(x) :      # downloads and saves picture from source URL
         soup = BeautifulSoup(r.text,"html.parser")
         title = soup.find("a",class_="title").string
         try :
-            author = soup.find("a",class_="u beta username").string
+            author = soup.find("a",class_="u beta username").string       #deviantart stuff
         except :
             author = soup.find("a",class_="u regular username").string
         k = soup.find(class_=("dev-view-deviation"))
@@ -59,7 +59,7 @@ def GetImage(x) :      # downloads and saves picture from source URL
         file.write(r.content)
         print (FileName)
     except :
-        print ('SAAWWY I DEERPED')
+        print ('Whoops')
 
 ##UI stuff
 
