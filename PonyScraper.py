@@ -5,15 +5,18 @@ import re
 from math import floor
 import  time
 
-def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the link 
-    if FromMonth >=  12 :                 #We will be downloading threads month by month thus this is necessary  
+def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the link
+    if FromMonth >=  12 :                 #We will be downloading threads month by month thus this is necessary
         FromYear += floor(FromMonth/12)
-        FromMonth = FromMonth % 12 + 1       #Jan is 1 not 0 
+        FromMonth = FromMonth % 12 + 1       #Jan is 1 not 0
     link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(FromYear)+"-"+str(FromMonth)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
+    print (link)
     r = requests.get(link)
     soup = BeautifulSoup(str(r.text),"html.parser")
+    soup.find('div',id='PopularPosts501').decompose()         #this module in the sidebar might contain links to other drawfriends
     L = soup.find_all("a",string=re.compile('Drawfriend Stuff'))
     L = [x.get('href') for x in L]
+    print (L)
     return L[1:]            #Removes first element which is random trash
 
 def ListGet(x):     # Makes a list of all source (Deviant art) URL for a given draw thread
@@ -28,7 +31,7 @@ def ListGet(x):     # Makes a list of all source (Deviant art) URL for a given d
 
 Directory = input("Enter directory , default(hit enter) is ponypics folder in desktop : ")
 
-def GetImage(x) :      # downloads and saves picture from source URL 
+def GetImage(x) :      # downloads and saves picture from source URL
     try:
         r = requests.get(str(x))
         soup = BeautifulSoup(r.text,"html.parser")
@@ -63,7 +66,7 @@ def GetImage(x) :      # downloads and saves picture from source URL
 
 ##UI stuff
 
-Month = int(input('Starting Month : '))  
+Month = int(input('Starting Month : '))
 Year = int(input('Starting year : '))
 Num = int(input ('Number of Months forward : '))
 Num = Month + Num
@@ -80,12 +83,12 @@ else :
     StartPic = int(StartPic)
 
 ThreadCounter = 0
-for i in range(Month,Num+1):
-    for thread in Threads(Year,i)[StartThread-1:]: 
+for i in range(Month,Num):
+    for thread in Threads(Year,i)[StartThread-1:]:
         for pic in ListGet(thread)[StartPic-1:]:
             GetImage(pic)
             print("month = " + str(i)+"   "+str(Threads(Year,i).index(thread)+1)+" of 32    " + str(ListGet(thread).index(pic)+1)+ " out of " + str(len(ListGet(thread))))
             StartPic = 1
             StartThread = 1
-            time.sleep(.3)
+            time.sleep(.3)            #Just in case someone has terrabyte internet or something 
 
