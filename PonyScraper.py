@@ -10,13 +10,11 @@ def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the l
         FromYear += floor(FromMonth/12)
         FromMonth = FromMonth % 12 + 1       #Jan is 1 not 0
     link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(FromYear)+"-"+str(FromMonth)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
-    print (link)
     r = requests.get(link)
     soup = BeautifulSoup(str(r.text),"html.parser")
     soup.find('div',id='PopularPosts501').decompose()         #this module in the sidebar might contain links to other drawfriends
     L = soup.find_all("a",string=re.compile('Drawfriend Stuff'))
     L = [x.get('href') for x in L]
-    print (L)
     return L[1:]            #Removes first element which is random trash
 
 def ListGet(x):     # Makes a list of all source (Deviant art) URL for a given draw thread
