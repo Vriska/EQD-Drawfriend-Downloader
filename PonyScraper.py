@@ -5,11 +5,11 @@ import re
 from math import floor
 import  time
 
-def Threads(FromYear,FromMonth) : ## makes a list of all drawfriend URL in the link 
+def Threads(YearsBackward,MonthsBackward) : ## makes a list of all drawfriend URL in the link , imputs are in number of years and number of months from start thread (See readme)
     if FromMonth >=  12 :
         FromYear += floor(FromMonth/12)
         FromMonth = FromMonth % 12 + 1
-    link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(FromYear)+"-"+str(FromMonth)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
+    link = r"https://www.equestriadaily.com/search/label/Drawfriend?updated-max="+str(YearsBackward)+"-"+str(MonthsBackward)+"-19T17:00:00-07:00&max-results=32&start=20&by-date=false"
     r = requests.get(link)
     soup = BeautifulSoup(str(r.text),"html.parser")
     L = soup.find_all("a",string=re.compile('Drawfriend Stuff'))
