@@ -76,7 +76,7 @@ if not StartThread:
     StartThread = int(1)
 else :
     StartThread = int(StartThread)
-StartPic = (input('Pic to start from? Defaults to first : '))
+StartPic = (input('Pic to start from? Defaults to first : ')) 
 if not StartPic :
     StartPic = int(1)
 else :
